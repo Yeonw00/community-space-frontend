@@ -1,4 +1,4 @@
-# 💻 Community Space - Frontend Web
+# Community Space - Frontend Web
 
 Web client for Community Space service, built with React and Axios.
 
