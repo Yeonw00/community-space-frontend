@@ -30,30 +30,56 @@ export default function LoginComponent() {
         }
     }
 
-    return(
-        <div className="LoginComponent">
-            <h1>Time to Login!</h1>
-            <br></br>
-            {showErrorMessage && <div className="errorMessage">Authentication Failed. Please check your credentials.</div>}
-            <div className="LoginForm">
-                <div className="form-group">
-                    <label>User Name:</label>
-                    <input type="text" name="username" value={username} onChange={handleUsernameChange}/>
-                </div>
-                <div className="form-group">
-                    <label>Password:</label>
-                    <div className="password-row">
-                        <input type="password" name="password" value={password} onChange={handlePasswordChange}/>
-                        <button className="login-button" type="button" name="login" onClick={handleSubmit}>login</button>
+    return (
+        <div className="login-container">
+            <div className="login-card">
+                <h1>Welcome Back</h1>
+                <p className="subtitle">Please enter your details</p>
+
+                {showErrorMessage && (
+                    <div className="error-message">
+                        Authentication Failed. Check your credentials.
                     </div>
+                )}
+
+                <div className="form-group">
+                    <label>User Name</label>
+                    <input 
+                        type="text" 
+                        placeholder="Enter your username"
+                        value={username} 
+                        onChange={handleUsernameChange}
+                    />
                 </div>
-                {/* <br></br> */}
-                {/* <div> */}
-                {/* </div> */}
-                <button onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/google"}>
-                    Google 로그인
+
+                <div className="form-group">
+                    <label>Password</label>
+                    <input 
+                        type="password" 
+                        placeholder="••••••••"
+                        value={password} 
+                        onChange={handlePasswordChange}
+                    />
+                </div>
+
+                <button className="main-login-btn" onClick={handleSubmit}>
+                    Login
                 </button>
 
+                <div className="divider">
+                    <span>OR</span>
+                </div>
+
+                <button 
+                    className="google-login-btn" 
+                    onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/google"}
+                >
+                    <img 
+                        src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" 
+                        alt="Google logo" 
+                    />
+                    Sign in with Google
+                </button>
             </div>
         </div>
     )
