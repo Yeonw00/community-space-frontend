@@ -106,72 +106,85 @@ export default function ListPostsComponent() {
         setSearchField('title')
     }
 
-    return(
-        <div className="container">
-            {!nameParam && 
-            <div style={{ display: 'flex', alignItems:'center', gap: '10px', justifyContent: 'flex-end' }}>
-                <select value={searchField} onChange={handleFieldChange} style={{ padding: '8px', fontSize: '16px' }}>
-                    <option value="title">제목</option>
-                    <option value="description">내용</option>
-                    <option value="username">작성자</option>
-                </select>
-                <input type="text" value={searchValue} onChange={handleInputChange} placeholder="검색어를 입력하세요"
-                    style={{ padding: '8px', fontSize: '16px', width: '300px' }}/>
-                <button onClick={handleSearchClick} style={{ padding: '8px 12px', fontSize: '16px' }}>
-                    검색
-                </button>
-            </div>}
-            <br/>
-            {message && <div className="alert alert-warning">{message}</div>}
-            <div>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th style={{textAlign: 'left'}}>Title</th>
-                            <th>User</th>
-                            <th>Upload Date</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            posts.map(
-                                post => (
-                                    <tr key={post.id}>
-                                        <td>
-                                        {post.thumbFilePath &&(<img src={post.thumbFilePath} alt="Thumbnail" />)}
-
-                                        </td>
-                                        <td>
-                                        <div style={{ textAlign: 'left' }}>
-                                            <Link  to={`/post/content/${post.id}`} className="post-link" >
-                                                {post.title}
-                                            </Link>
-                                        </div>
-                                        </td>
-                                        <td>{post.username}</td>
-                                        <td>{new Date(post.uploadDate).toLocaleDateString('en-CA')}</td>
-                                        <td>
-                                            {username === post.username &&
-                                                <button className="btn btn-success" onClick={() => updatePost(post.id)}>Edit</button>
-                                            }
-                                            </td>
-                                        <td>
-                                            {username === post.username &&
-                                                <button className="btn btn-warning" onClick={() => deletePost(post.id)}>Delete</button>
-                                            }
-                                        </td>
-                                    </tr>
-                                )
-                            )
-                        }
-                        
-                    </tbody>
-                </table>
+    return (
+        <div className="post-list-container">
+            {/* 상단 헤더 영역 */}
+            <div className="list-header">
+                <h2>Feeds</h2>
+                
+                <div className="search-wrapper">
+                    {!nameParam && (
+                        <>
+                            <select value={searchField} onChange={handleFieldChange}>
+                                <option value="title">제목</option>
+                                <option value="username">작성자</option>
+                            </select>
+                            <input 
+                                type="text" 
+                                value={searchValue} 
+                                onChange={handleInputChange} 
+                                placeholder="Search posts..." 
+                            />
+                            <button className="search-btn" onClick={handleSearchClick}>검색</button>
+                        </>
+                    )}
+                    {!nameParam && (
+                        <button className="btn-new-post" onClick={createPost}>
+                            + New Post
+                        </button>
+                    )}
+                </div>
             </div>
-            {!nameParam && <div className="btn btn-success m-5" onClick={createPost}>New Post</div>}
+
+            {message && <div className="alert alert-warning">{message}</div>}
+
+            <table className="post-table">
+                <thead>
+                    <tr>
+                        <th width="100">Image</th>
+                        <th style={{ textAlign: 'left' }}>Post Title</th>
+                        <th width="120">Author</th>
+                        <th width="120">Date</th>
+                        <th width="180">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {posts.map(post => (
+                        <tr key={post.id} className="post-row">
+                            <tr key={post.id} className="post-row">
+                            <td style={{ width: post.thumbFilePath ? '80px' : '0px', padding: post.thumbFilePath ? '15px' : '0px' }}>
+                                {post.thumbFilePath && (
+                                    <img 
+                                        src={post.thumbFilePath} 
+                                        className="post-thumb" 
+                                        alt="thumbnail" 
+                                    />
+                                )}
+                            </td>
+                        </tr>
+                            <td style={{ textAlign: 'left' }}>
+                                <Link to={`/post/content/${post.id}`} className="post-title-link">
+                                    {post.title}
+                                </Link>
+                            </td>
+                            <td style={{ color: '#555' }}>{post.username}</td>
+                            <td style={{ color: '#888', fontSize: '0.9rem' }}>
+                                {new Date(post.uploadDate).toLocaleDateString('ko-KR')}
+                            </td>
+                            <td>
+                                <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                                    {username === post.username && (
+                                        <>
+                                            <button className="btn-edit" onClick={() => updatePost(post.id)}>Edit</button>
+                                            <button className="btn-delete" onClick={() => deletePost(post.id)}>Delete</button>
+                                        </>
+                                    )}
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
-    )
+    );
 }
